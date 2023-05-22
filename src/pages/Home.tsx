@@ -13,7 +13,7 @@ import {PeopleCard} from '@geekseat/technical-test/components';
 export default function Home(): JSX.Element {
   const {isInitialLoading, error, data, fetchNextPage, isFetchingNextPage} =
     useInfiniteQuery({
-      queryKey: ['people'],
+      queryKey: ['paginatePeople'],
       queryFn: ({pageParam = 1}) =>
         PeopleService.paginatePeople({query: {page: `${pageParam}`}}),
       getNextPageParam: lastPage =>
@@ -42,7 +42,13 @@ export default function Home(): JSX.Element {
         data={data?.pages?.flatMap(page => page.results)}
         renderItem={({index, item}) => (
           <View style={index === 0 && styles.firstItem}>
-            <PeopleCard name={item.name} />
+            <PeopleCard
+              id={item.url.substring(
+                item.url.indexOf('people/') + 'people/'.length,
+                item.url.length - 1,
+              )}
+              name={item.name}
+            />
           </View>
         )}
         ListFooterComponent={
