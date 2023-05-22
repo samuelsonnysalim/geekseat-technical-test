@@ -1,12 +1,16 @@
-import {render, screen, waitFor} from '@testing-library/react-native';
+import {
+  render,
+  screen,
+  waitFor,
+  fireEvent,
+} from '@testing-library/react-native';
 import {QueryClient, QueryClientProvider} from '@tanstack/react-query';
 import {NavigationContainer} from '@react-navigation/native';
-import {PeopleService} from '@geekseat/technical-test/services';
 import {AppNavigator} from '@geekseat/technical-test/App';
 
 jest.mock('@geekseat/technical-test/services/PeopleService', () => ({
   PeopleService: {
-    getPeople: jest
+    paginatePeople: jest
       .fn()
       .mockResolvedValueOnce({
         count: 3,
@@ -154,10 +158,6 @@ jest.mock('@geekseat/technical-test/services/PeopleService', () => ({
   },
 }));
 
-const getPeople = PeopleService.getPeople as jest.Mocked<
-  typeof PeopleService.getPeople
->;
-
 const queryClient = new QueryClient();
 
 describe('Home', () => {
@@ -174,8 +174,68 @@ describe('Home', () => {
     ).toBeDefined();
 
     await waitFor(() => {
-      expect(getPeople).toBeCalledTimes(1);
+      expect(screen.getByText('LS')).toBeDefined();
       expect(screen.getByText('Luke Skywalker')).toBeDefined();
+
+      expect(screen.getByText('C3')).toBeDefined();
+      expect(screen.getByText('C-3PO')).toBeDefined();
+    });
+  });
+
+  it('should load more on reaching end of the flatlist', async () => {
+    render(
+      <QueryClientProvider client={queryClient}>
+        <NavigationContainer>
+          <AppNavigator />
+        </NavigationContainer>
+      </QueryClientProvider>,
+    );
+
+    await waitFor(() => {
+      expect(screen.getByText('LS')).toBeDefined();
+      expect(screen.getByText('Luke Skywalker')).toBeDefined();
+    });
+
+    fireEvent.scroll(screen.getByTestId('list'), {
+      nativeEvent: {
+        contentOffset: {
+          y: 500,
+        },
+        contentSize: {
+          height: 500,
+          width: 100,
+        },
+        layoutMeasurement: {
+          height: 100,
+          width: 100,
+        },
+      },
+    });
+
+    await waitFor(() => {
+      expect(screen.getByText('RD')).toBeDefined();
+      expect(screen.getByText('R2-D2')).toBeDefined();
+    });
+
+    fireEvent.scroll(screen.getByTestId('list'), {
+      nativeEvent: {
+        contentOffset: {
+          y: 500,
+        },
+        contentSize: {
+          height: 500,
+          width: 100,
+        },
+        layoutMeasurement: {
+          height: 100,
+          width: 100,
+        },
+      },
+    });
+
+    await waitFor(() => {
+      expect(screen.getByText('LO')).toBeDefined();
+      expect(screen.getByText('Leia Organa')).toBeDefined();
     });
   });
 });
