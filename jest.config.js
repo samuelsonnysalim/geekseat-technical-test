@@ -2,6 +2,8 @@ const {defaults: tsjPreset} = require('ts-jest/presets');
 
 module.exports = {
   ...tsjPreset,
+  verbose: true,
+  silent: true,
   preset: 'react-native',
   transform: {
     '^.+\\.tsx?$': [
