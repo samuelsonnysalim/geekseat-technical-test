@@ -1,6 +1,6 @@
 import {createService} from './CoreService';
 
-interface People {
+interface PeopleResponse {
   name: string;
   height: number;
   mass: number;
@@ -23,12 +23,16 @@ interface PeoplePaginationResponse {
   count: number;
   next?: string;
   previous?: string;
-  results: People[];
+  results: PeopleResponse[];
 }
 
 export const PeopleService = {
   paginatePeople: createService<PeoplePaginationResponse>({
     url: 'people',
+    method: 'get',
+  }),
+  getPeople: createService<PeopleResponse>({
+    url: 'people/:id',
     method: 'get',
   }),
 };
