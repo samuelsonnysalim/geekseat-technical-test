@@ -1,0 +1,34 @@
+import {createService} from './CoreService';
+
+interface People {
+  name: string;
+  height: number;
+  mass: number;
+  hair_color: string;
+  skin_color: string;
+  eye_color: string;
+  birth_year: string;
+  gender: string;
+  homeworld: string;
+  films: string[];
+  species: string[];
+  vehicles: string[];
+  starships: string[];
+  created: Date;
+  edited: Date;
+  url: string;
+}
+
+interface PeoplePaginationResponse {
+  count: number;
+  next?: string;
+  previous?: string;
+  results: People[];
+}
+
+export const PeopleService = {
+  getPeople: createService<PeoplePaginationResponse>({
+    url: 'people',
+    method: 'get',
+  }),
+};
