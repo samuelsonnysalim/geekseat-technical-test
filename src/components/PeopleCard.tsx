@@ -1,17 +1,24 @@
-import React from 'react';
-import {StyleSheet, Text, View} from 'react-native';
+import React, {useCallback} from 'react';
+import {StyleSheet, Text, TouchableOpacity} from 'react-native';
+import {useNavigation} from '@react-navigation/native';
+import {DetailNavigationProp} from '@geekseat/technical-test/pages/Detail';
 import Initial from './Initial';
 
 interface Props {
+  id: string;
   name: string;
 }
 
 export default function PeopleCard(props: Partial<Props>): JSX.Element {
+  const navigation = useNavigation<DetailNavigationProp>();
+  const showDetail = useCallback(() => {
+    navigation.navigate('Detail', {id: props.id, name: props.name});
+  }, [props.id, props.name, navigation]);
   return (
-    <View style={styles.container}>
+    <TouchableOpacity style={styles.container} onPress={showDetail}>
       <Initial containerStyle={styles.containerInitial} name={props.name} />
       <Text style={styles.textName}>{props.name}</Text>
-    </View>
+    </TouchableOpacity>
   );
 }
 
