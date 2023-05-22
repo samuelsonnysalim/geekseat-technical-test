@@ -1,19 +1,32 @@
 import axios, {Method} from 'axios';
+import {Path} from 'path-parser';
 
 axios.defaults.baseURL = 'https://swapi.dev/api/';
 
 interface ServiceOptions {
-  url?: string;
-  method?: Method | string;
+  url: string;
+  method: Method | string;
 }
 
-interface RequestOptions {
+interface RequestOptions<D> {
   params: Record<string, any>;
+  body: D;
+  query: Record<string, string>;
 }
 
-type Service<T> = (options?: Partial<RequestOptions>) => Promise<T>;
+type Service<T, D> = (options?: Partial<RequestOptions<D>>) => Promise<T>;
 
-export function createService<T = any>(options: ServiceOptions): Service<T> {
-  return async (request?: Partial<RequestOptions>) =>
-    (await axios.request<T>({...options, ...(request || {})})).data;
+export function createService<T = any, D = any>(
+  options: ServiceOptions,
+): Service<T, D> {
+  return async (request?: Partial<RequestOptions<D>>) =>
+    (
+      await axios.request<T>({
+        url: new Path(options.url).build(request?.params),
+        method: options.method,
+        data: request?.body,
+        params: request?.query,
+        ...(request || {}),
+      })
+    ).data;
 }
