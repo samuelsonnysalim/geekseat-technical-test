@@ -27,7 +27,7 @@ interface PeoplePaginationResponse {
 }
 
 export const PeopleService = {
-  getPeople: createService<PeoplePaginationResponse>({
+  paginatePeople: createService<PeoplePaginationResponse>({
     url: 'people',
     method: 'get',
   }),
