@@ -17,6 +17,19 @@ This repository is a technical test for GeekSeat Job Application. Using `React N
    yarn android
    ```
 
+## Tech Stacks
+
+- [React Native](https://reactnative.dev/)
+- [TypeScript](https://www.typescriptlang.org/)
+- [React Navigation](https://reactnavigation.org/)
+- [React Query](https://tanstack.com/query/latest/)
+- [Axios](https://axios-http.com/docs/intro)
+- [Moment](https://momentjs.com/)
+- [Path Parser](https://www.npmjs.com/package/path-parser)
+- [Testing Library for React Native](https://testing-library.com/docs/react-native-testing-library/intro/)
+- [Jest](https://jestjs.io/) + [TS-Jest](https://www.npmjs.com/package/ts-jest)
+- [Eslint](https://eslint.org/) + [Prettier](https://prettier.io/)
+
 ## Test Result
 
 ```sh
@@ -86,3 +99,7 @@ Home Page
 
 ![Detail](images/Detail.jpg "Detail")
 Detail Page
+
+## APK Link
+
+[Click here to download](https://github.com/samuelsonnysalim/geekseat-technical-test/raw/master/apk/app-debug.apk)
